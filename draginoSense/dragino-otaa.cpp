@@ -46,6 +46,8 @@
 #include <CayenneLPP.h>
 #include "DHT.h"
 
+#include "ttnIdentification.h"
+
 void os_getArtEui (u1_t* buf) ;
 void os_getDevEui (u1_t* buf) ;
 void os_getDevKey (u1_t* buf) ;
@@ -61,23 +63,9 @@ DHT dht(DHTPIN, DHTTYPE);
 
 CayenneLPP lpp(51);
 
-// This EUI must be in little-endian format, so least-significant-byte
-// first. When copying an EUI from ttnctl output, this means to reverse
-// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
-// 0x70.
-//                        as copied  MSB { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x01, 0x3D, 0xFC } LSB
-static const u1_t PROGMEM APPEUI[8]={ 0xFC, 0x3D, 0x01, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+
 void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
-
-// This should also be in little endian format, see above.
-//                                  { 0x00, 0xC0, 0xDA, 0x61, 0x33, 0xC8, 0x09, 0x72 }
-static const u1_t PROGMEM DEVEUI[8]={ 0x72, 0x09, 0xC8, 0x33, 0x61, 0xDA, 0xC0, 0x00 };
 void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
-
-// This key should be in big endian format (or, since it is not really a
-// number but a block of memory, endianness does not really apply). In
-// practice, a key taken from ttnctl can be copied as-is.
-static const u1_t PROGMEM APPKEY[16] = { 0xEC, 0x7B, 0x46, 0x8C, 0x5E, 0x15, 0x48, 0xA6, 0xAD, 0xA9, 0xEF, 0x9D, 0x2C, 0x52, 0xBB, 0x6D };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
 static osjob_t sendjob;
