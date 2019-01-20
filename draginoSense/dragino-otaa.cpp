@@ -154,12 +154,13 @@ void onEvent (ev_t ev) {
               Serial.println(F(" bytes of payload"));
             }
 
-            // Schedule next transmission
-            //os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), do_send);
+            // Sleep for a while
             for (int i=0; i<int(TX_INTERVAL/8); i++) {
             	// Use library from https://github.com/rocketscream/Low-Power
             	LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
             }
+
+            // Schedule next transmission
             do_send(&sendjob);
 
             break;
