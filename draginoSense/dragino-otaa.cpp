@@ -154,7 +154,7 @@ void onEvent (ev_t ev) {
               Serial.println(F(" bytes of payload"));
             }
 
-            // Sleep for a while
+            // Sleep for a while (and save power)
             for (int i=0; i<int(TX_INTERVAL/8); i++) {
             	// Use library from https://github.com/rocketscream/Low-Power
             	LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
